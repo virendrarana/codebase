@@ -24,7 +24,6 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
           .timeout(Duration(seconds: 10));
 
       if (response.statusCode == 200) {
-        // Convert the entire JSON response into the model.
         return UserResponseModel.fromJson(response.data);
       } else {
         throw Exception('Failed to load users');
