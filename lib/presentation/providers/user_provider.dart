@@ -66,7 +66,6 @@ class UserProvider with ChangeNotifier {
       final userJsonList = _users.map((user) => user.toJson()).toList();
       await _userBox.put('userBox', userJsonList);
 
-      print("CacheDATA ${_userBox.get("userBox")}");
     } catch (e) {
       _errorMessage = e.toString();
       final cachedUsers = _userBox.get('userBox');
@@ -85,12 +84,6 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  void cacheData() async{
-   var cacheData = await _userBox.get('userBox');
-   print("CacheDATALOAD ${cacheData}");
-   _users.addAll(cacheData);
-   notifyListeners();
-  }
 
   void updateSearchQuery(String query) {
     _searchQuery = query;
