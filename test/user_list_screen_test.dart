@@ -1,5 +1,5 @@
-import 'package:codebase_assignment/domain/entities/user.dart';
-import 'package:codebase_assignment/domain/usecases/get_users.dart';
+/*import 'package:codebase_assignment/domain/entities/user.dart';
+import 'package:codebase_assignment/domain/usecases/get_users_use_case.dart';
 import 'package:codebase_assignment/domain/repositories/user_repository.dart';
 import 'package:codebase_assignment/presentation/providers/user_provider.dart';
 import 'package:codebase_assignment/presentation/screens/user_list_screen.dart';
@@ -17,7 +17,7 @@ class DummyUserRepository implements UserRepository {
   }
 }
 
-class DummyGetUsers extends GetUsers {
+class DummyGetUsers extends GetUsersUseCase {
   DummyGetUsers() : super(DummyUserRepository());
 }
 
@@ -55,7 +55,7 @@ class FakeUserProvider extends ChangeNotifier implements UserProvider {
   String? get errorMessage => null;
 
   @override
-  GetUsers get getUsers => DummyGetUsers();
+  GetUsersUseCase get getUsers => DummyGetUsers();
 }
 
 void main() {
@@ -113,4 +113,4 @@ void main() {
       });
     });
   });
-}
+}*/

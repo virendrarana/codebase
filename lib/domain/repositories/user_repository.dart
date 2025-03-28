@@ -1,5 +1,7 @@
-import '../entities/user.dart';
+import '../../data/models/user_response_model.dart';
 
 abstract class UserRepository {
-  Future<List<User>> fetchUsers({int page, int perPage});
+  Future<UserResponseModel> getUsers({int page, int perPage});
 }
+
+

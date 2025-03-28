@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'package:dio/dio.dart';
-import '../models/user_model.dart';
+
+import '../models/user_response_model.dart';
 
 abstract class UserRemoteDataSource {
-  Future<List<UserModel>> fetchUsers({int page = 1, int perPage = 10});
+  Future<UserResponseModel> fetchUsers({int page = 1, int perPage = 10});
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -13,18 +14,18 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   UserRemoteDataSourceImpl({required this.dio});
 
   @override
-  Future<List<UserModel>> fetchUsers({int page = 1, int perPage = 10}) async {
+  Future<UserResponseModel> fetchUsers({int page = 1, int perPage = 10}) async {
     try {
       final response = await dio
           .get(
-            '$baseUrl/users',
-            queryParameters: {'page': page, 'per_page': perPage},
-          )
+        '$baseUrl/users',
+        queryParameters: {'page': page, 'per_page': perPage},
+      )
           .timeout(Duration(seconds: 10));
 
       if (response.statusCode == 200) {
-        final List data = response.data['data'];
-        return data.map((json) => UserModel.fromJson(json)).toList();
+        // Convert the entire JSON response into the model.
+        return UserResponseModel.fromJson(response.data);
       } else {
         throw Exception('Failed to load users');
       }
