@@ -14,7 +14,7 @@ class UserRepositoryImpl implements UserRepository {
   Future<List<User>> fetchUsers({int page = 1, int perPage = 10}) async {
     final cacheKey = 'users_page_$page';
     final timestampKey = 'users_page_${page}_timestamp';
-    final cacheDuration = Duration(hours: 1);
+    final cacheDuration = Duration(minutes: 5);
 
     final cachedData = userBox.get(cacheKey);
     final cachedTimestamp = userBox.get(timestampKey);
