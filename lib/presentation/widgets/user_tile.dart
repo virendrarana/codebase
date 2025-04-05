@@ -7,10 +7,7 @@ class UserTile extends StatelessWidget {
   final User user;
   final VoidCallback onTap;
 
-  const UserTile({
-    super.key,
-    required this.onTap, required this.user,
-  });
+  const UserTile({super.key, required this.onTap, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +30,14 @@ class UserTile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Container(
-                padding: EdgeInsets.all(12.w),
-                child: CircleAvatar(
-                  radius: 28.r,
-                  backgroundImage: NetworkImage(user.avatar),
+              Hero(
+                tag: 'avatar_${user.id}',
+                child: Container(
+                  padding: EdgeInsets.all(12.w),
+                  child: CircleAvatar(
+                    radius: 28.r,
+                    backgroundImage: NetworkImage(user.avatar),
+                  ),
                 ),
               ),
               Expanded(

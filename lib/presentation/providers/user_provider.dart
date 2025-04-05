@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
-import '../../data/models/user_model.dart';
+import '../../domain/entities/user.dart';
+import '../../domain/entities/user_response.dart';
 import '../../domain/usecases/get_users_use_case.dart';
 
 class UserProvider with ChangeNotifier {
   final GetUsersUseCase getUsersUseCase;
   final Box _userBox;
 
-  List<UserModel> _users = [];
+  List<User> _users = [];
   bool _isLoading = false;
   String? _errorMessage;
   int _page = 1;
@@ -15,21 +16,18 @@ class UserProvider with ChangeNotifier {
   String _searchQuery = '';
 
   UserProvider({required this.getUsersUseCase, required Box userBox})
-      : _userBox = userBox {
-
+    : _userBox = userBox {
     final cachedUsers = _userBox.get('userBox');
     if (cachedUsers != null) {
-      _users = List<UserModel>.from(
+      _users = List<User>.from(
         (cachedUsers as List).map(
-              (json) => UserModel.fromJson(
-            Map<String, dynamic>.from(json),
-          ),
+          (json) => User.fromJson(Map<String, dynamic>.from(json)),
         ),
       );
     }
   }
 
-  List<UserModel> get users {
+  List<User> get users {
     if (_searchQuery.isEmpty) {
       return _users;
     } else {
@@ -42,7 +40,6 @@ class UserProvider with ChangeNotifier {
 
   bool get isLoading => _isLoading;
   String? get errorMessage => _errorMessage;
-
   bool get hasMore => _page <= _totalPages;
 
   Future<void> fetchUsers({bool refresh = false, int perPage = 10}) async {
@@ -55,27 +52,26 @@ class UserProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      final response =
-      await getUsersUseCase.call(page: _page, perPage: perPage);
+      final UserResponse response = await getUsersUseCase.call(
+        page: _page,
+        perPage: perPage,
+      );
       _totalPages = response.totalPages;
-      await Future.delayed(Duration(seconds: 1));
+
+      await Future.delayed(const Duration(seconds: 1));
 
       _users.addAll(response.data);
       _page++;
 
       final userJsonList = _users.map((user) => user.toJson()).toList();
       await _userBox.put('userBox', userJsonList);
-
-      print("CacheDATA ${_userBox.get("userBox")}");
     } catch (e) {
       _errorMessage = e.toString();
       final cachedUsers = _userBox.get('userBox');
       if (cachedUsers != null) {
-        _users = List<UserModel>.from(
+        _users = List<User>.from(
           (cachedUsers as List).map(
-                (json) => UserModel.fromJson(
-              Map<String, dynamic>.from(json),
-            ),
+            (json) => User.fromJson(Map<String, dynamic>.from(json)),
           ),
         );
       }
@@ -85,11 +81,18 @@ class UserProvider with ChangeNotifier {
     }
   }
 
-  void cacheData() async{
-   var cacheData = await _userBox.get('userBox');
-   print("CacheDATALOAD ${cacheData}");
-   _users.addAll(cacheData);
-   notifyListeners();
+  void cacheData() async {
+    final cacheData = await _userBox.get('userBox');
+    if (cacheData != null) {
+      _users.addAll(
+        List<User>.from(
+          (cacheData as List).map(
+            (json) => User.fromJson(Map<String, dynamic>.from(json)),
+          ),
+        ),
+      );
+      notifyListeners();
+    }
   }
 
   void updateSearchQuery(String query) {

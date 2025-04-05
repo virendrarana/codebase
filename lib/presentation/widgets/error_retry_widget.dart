@@ -7,15 +7,13 @@ class ErrorRetryWidget extends StatelessWidget {
   final String? errorMessage;
   final VoidCallback onRetry;
 
-  const ErrorRetryWidget({
-    super.key,
-    required this.onRetry,
-    this.errorMessage,
-  });
+  const ErrorRetryWidget({super.key, required this.onRetry, this.errorMessage});
 
   @override
   Widget build(BuildContext context) {
-    final String friendlyMessage = ErrorHelper.getFriendlyErrorMessage(errorMessage);
+    final String friendlyMessage = ErrorHelper.getFriendlyErrorMessage(
+      errorMessage,
+    );
     return Material(
       child: Center(
         child: Padding(

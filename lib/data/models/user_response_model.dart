@@ -21,7 +21,9 @@ class UserResponseModel {
       perPage: json['per_page'],
       total: json['total'],
       totalPages: json['total_pages'],
-      data: List<UserModel>.from(json['data'].map((x) => UserModel.fromJson(x))),
+      data: List<UserModel>.from(
+        json['data'].map((x) => UserModel.fromJson(x)),
+      ),
     );
   }
 }

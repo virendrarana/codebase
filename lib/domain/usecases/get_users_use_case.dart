@@ -1,4 +1,4 @@
-import '../../data/models/user_response_model.dart';
+import '../../domain/entities/user_response.dart';
 import '../repositories/user_repository.dart';
 
 class GetUsersUseCase {
@@ -6,7 +6,7 @@ class GetUsersUseCase {
 
   GetUsersUseCase(this.repository);
 
-  Future<UserResponseModel> call({int page = 1, int perPage = 10}) async {
+  Future<UserResponse> call({int page = 1, int perPage = 10}) async {
     return await repository.getUsers(page: page, perPage: perPage);
   }
 }

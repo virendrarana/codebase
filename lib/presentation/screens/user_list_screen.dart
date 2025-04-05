@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/user_provider.dart';
 import '../widgets/error_retry_widget.dart';
 import '../widgets/user_tile.dart';
@@ -20,15 +21,16 @@ class _UserListScreenState extends State<UserListScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<UserProvider>(context, listen: false)
-          .fetchUsers(refresh: true);
+      Provider.of<UserProvider>(
+        context,
+        listen: false,
+      ).fetchUsers(refresh: true);
     });
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent - 50.h) {
-        final provider =
-        Provider.of<UserProvider>(context, listen: false);
+        final provider = Provider.of<UserProvider>(context, listen: false);
         if (provider.hasMore && !provider.isLoading) {
           provider.fetchUsers();
         }
@@ -52,8 +54,8 @@ class _UserListScreenState extends State<UserListScreen> {
             Padding(
               padding: EdgeInsets.all(12.w),
               child: Consumer<UserProvider>(
-                builder: (context, userProvider, _) =>
-                    CupertinoSearchTextField(
+                builder:
+                    (context, userProvider, _) => CupertinoSearchTextField(
                       onChanged: userProvider.updateSearchQuery,
                       placeholder: 'Search by name...',
                     ),
@@ -70,9 +72,7 @@ class _UserListScreenState extends State<UserListScreen> {
                     );
                   }
                   if (userProvider.users.isEmpty && userProvider.isLoading) {
-                    return const Center(
-                      child: CupertinoActivityIndicator(),
-                    );
+                    return const Center(child: CupertinoActivityIndicator());
                   }
                   return RefreshIndicator(
                     onRefresh: () => userProvider.fetchUsers(refresh: true),
@@ -96,11 +96,11 @@ class _UserListScreenState extends State<UserListScreen> {
                         } else {
                           return userProvider.isLoading
                               ? Padding(
-                            padding: EdgeInsets.all(16.w),
-                            child: const Center(
-                              child: CupertinoActivityIndicator(),
-                            ),
-                          )
+                                padding: EdgeInsets.all(16.w),
+                                child: const Center(
+                                  child: CupertinoActivityIndicator(),
+                                ),
+                              )
                               : const SizedBox.shrink();
                         }
                       },

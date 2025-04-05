@@ -10,6 +10,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 import 'package:provider/provider.dart';
 
+/// Dummy implementation of UserRepository that returns an empty list.
 class DummyUserRepository implements UserRepository {
   @override
   Future<List<User>> fetchUsers({int page = 1, int perPage = 10}) async {
@@ -17,10 +18,12 @@ class DummyUserRepository implements UserRepository {
   }
 }
 
+/// Dummy implementation of GetUsersUseCase that uses the DummyUserRepository.
 class DummyGetUsers extends GetUsersUseCase {
   DummyGetUsers() : super(DummyUserRepository());
 }
 
+/// Fake provider for testing. It pre-populates a single user.
 class FakeUserProvider extends ChangeNotifier implements UserProvider {
   final List<User> _users = [
     User(
@@ -42,7 +45,7 @@ class FakeUserProvider extends ChangeNotifier implements UserProvider {
   bool get isLoading => false;
 
   @override
-  Future<void> fetchUsers({bool refresh = false}) async {
+  Future<void> fetchUsers({bool refresh = false, int perPage = 10}) async {
     // No-op for testing.
   }
 
@@ -80,6 +83,7 @@ void main() {
         );
         await tester.pumpAndSettle();
 
+        // Verify that the search field and user details are rendered.
         expect(find.byType(CupertinoSearchTextField), findsOneWidget);
         expect(find.text('John Doe'), findsOneWidget);
         expect(find.text('john.doe@example.com'), findsOneWidget);
@@ -98,6 +102,12 @@ void main() {
             child: ScreenUtilInit(
               designSize: const Size(360, 690),
               builder: (context, child) => MaterialApp(
+                // For navigation testing, we add a dummy route for detail screen.
+                routes: {
+                  '/userDetail': (context) => const Scaffold(
+                    body: Center(child: Text('User Detail Screen')),
+                  ),
+                },
                 home: child,
               ),
               child: const UserListScreen(),
@@ -106,10 +116,12 @@ void main() {
         );
         await tester.pumpAndSettle();
 
+        // Tap the user tile.
         await tester.tap(find.text('John Doe'));
         await tester.pumpAndSettle();
 
-        expect(find.byType(UserListScreen), findsNothing);
+        // Verify that the detail screen is pushed.
+        expect(find.text('User Detail Screen'), findsOneWidget);
       });
     });
   });

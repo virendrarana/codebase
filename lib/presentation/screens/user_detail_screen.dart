@@ -56,19 +56,14 @@ class UserDetailScreen extends StatelessWidget {
                   style: CupertinoTheme.of(context)
                       .textTheme
                       .navLargeTitleTextStyle
-                      .copyWith(
-                    fontSize: 28.sp,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      .copyWith(fontSize: 28.sp, fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 16.h),
                 Text(
                   user.email,
-                  style: CupertinoTheme.of(context).textTheme.textStyle.copyWith(
-                    fontSize: 18.sp,
-                    color: Colors.black,
-                  ),
+                  style: CupertinoTheme.of(context).textTheme.textStyle
+                      .copyWith(fontSize: 18.sp, color: Colors.black),
                   textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 290.h),
