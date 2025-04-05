@@ -65,6 +65,7 @@ class UserProvider with ChangeNotifier {
 
       final userJsonList = _users.map((user) => user.toJson()).toList();
       await _userBox.put('userBox', userJsonList);
+
     } catch (e) {
       _errorMessage = e.toString();
       final cachedUsers = _userBox.get('userBox');
