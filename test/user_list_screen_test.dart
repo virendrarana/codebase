@@ -1,4 +1,4 @@
-/*import 'package:codebase_assignment/domain/entities/user.dart';
+import 'package:codebase_assignment/domain/entities/user.dart';
 import 'package:codebase_assignment/domain/usecases/get_users_use_case.dart';
 import 'package:codebase_assignment/domain/repositories/user_repository.dart';
 import 'package:codebase_assignment/presentation/providers/user_provider.dart';
@@ -125,4 +125,4 @@ void main() {
       });
     });
   });
-}*/
+}
